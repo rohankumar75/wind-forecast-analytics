@@ -1,0 +1,19 @@
+services:
+  backend:
+    build: ./backend
+    environment:
+      ELEXON_BASE_URL: ${ELEXON_BASE_URL:-https://data.elexon.co.uk/bmrs/api/v1}
+      ELEXON_TIMEOUT_SECONDS: ${ELEXON_TIMEOUT_SECONDS:-20}
+      DECISION_CUTOFF_HOUR_UTC: ${DECISION_CUTOFF_HOUR_UTC:-10}
+      USE_SAMPLE_DATA: ${USE_SAMPLE_DATA:-true}
+      FRONTEND_ORIGIN: http://localhost:5173
+    ports:
+      - "8000:8000"
+  frontend:
+    build: ./frontend
+    environment:
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-}
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
